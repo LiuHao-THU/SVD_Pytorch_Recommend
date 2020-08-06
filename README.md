@@ -1,10 +1,10 @@
-Pytorch Version SVD Algorithms
+# Pytorch Version SVD Algorithms
 
-Reference:
-### https://medium.com/@rinabuoy13/explicit-recommender-system-matrix-factorization-in-pytorch-f3779bb55d74
+##Reference:
+## https://medium.com/@rinabuoy13/explicit-recommender-system-matrix-factorization-in-pytorch-f3779bb55d74
 
 
-### Train details
+## Train details
 
 DataSets: Movie Lens 1M 
 
@@ -40,9 +40,7 @@ Less Than 1s to Predict The Top10 Results For All User(6040 Users)
 The Results is The Same as discribled in Paper:
 https://arxiv.org/abs/1802.04606
 
-
-
-### Some Problem In Re-Implementation The Paper
+## Some Problem In Re-Implementation The Paper
 1. How to Init The weights in Embedding Layer
 	Failed Method: norm, uniform, kaiming_init
 	Succuss Method:
@@ -60,7 +58,7 @@ https://arxiv.org/abs/1802.04606
 	Matrix Operation Using Gpus.
 
 
-### To do
+## To do
 1. Collaborative Metric Learning (How to Fast Predict All The Negative Samples For Very Large User-Item Matrix: eg 60w+ Users 3000+ Items)
 
 When we use SVD to predict all the negative sample to fill User-Item Matrix,
