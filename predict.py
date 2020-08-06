@@ -18,7 +18,8 @@ def fastPredictionGpu(
     bias_item: user bias
     filter_list: filter list for user used item
     """
-    results = None
+    results_index = None
+    results_score = None
     for i in tqdm(range(0, embed_user.shape[0], batch)):
         mask = embed_user.new_ones([min(batch, embed_user.shape[0] - i), embed_item.shape[0]])
         for j in range(batch):
@@ -32,9 +33,14 @@ def fastPredictionGpu(
         # get TopK
         topk_score, topk_index = torch.topk(pred, k = topk, dim = 1)
         # concat results
-        if results is not None:
-            results = torch.cat((topk_index, results), dim = 0)
+        if results_index is not None:
+            results_index = torch.cat((topk_index, results_index), dim = 0)
         else:
-            results = topk_index
+            results_index = topk_index
 
-    return results
+        if results_score is not None:
+            results_score = torch.cat((topk_score, results_score), dim = 0)
+        else:
+            results_score = topk_score
+
+    return results_score, results_index
