@@ -1,8 +1,12 @@
-reference:
+Pytorch Version SVD Algorithms
+
+Reference:
 ### https://medium.com/@rinabuoy13/explicit-recommender-system-matrix-factorization-in-pytorch-f3779bb55d74
 
 
 ### Train details
+
+DataSets: Movie Lens 1M 
 
 Load Datasets Started...
 Load Datasets Ended...
@@ -25,10 +29,53 @@ MSE:0.7263 ; RMSE:0.8522; MAE:0.6664
 MSE:0.7336 ; RMSE:0.8565; MAE:0.6698
 MSE:0.7426 ; RMSE:0.8618; MAE:0.6741
 Early stopping!
-MSE:0.7183 ; RMSE:0.8475; MAE:0.6626(Results for Validation)
+MSE:0.7183 ; RMSE:0.8475; MAE:0.6626(Results for Validation) 
+
+Less Than 3.5s Time to Train 1 Epoch
+
+AMD 3600 + 1080 Ti
+
+Less Than 1s to Predict The Top10 Results For All User(6040 Users)
+
+The Results is The Same as discribled in Paper:
+https://arxiv.org/abs/1802.04606
 
 
-The overfit during training the 
+
+### Some Problem In Re-Implementation The Paper
+1. How to Init The weights in Embedding Layer
+	Failed Method: norm, uniform, kaiming_init
+	Succuss Method:
+2. Overfit Problem
+	Failed Method:
+	1. dropout in embedding product
+	2. dropout in embedding layer
+	3. too large or small weight decay
+	Succuss Method:
+	approporiate weight decay: 1e-5(try from 1e-3 to 1e-6)
+	early stop
+3. How to Fast Fill The User-Item Matrix
+	Generate a dataLoader for all unseen(Negative) \
+	User-Item Samples will Cost Much Longer Time Than \
+	Matrix Operation Using Gpus.
 
 
-Paper SVD 
+### To do
+1. Collaborative Metric Learning (How to Fast Predict All The Negative Samples For Very Large User-Item Matrix: eg 60w+ Users 3000+ Items)
+
+When we use SVD to predict all the negative sample to fill User-Item Matrix,
+Gpu can be Used to accelerate Calculation by Matrix Multiply. (Can be Finished In 1 minute)
+
+If we Generate A DataLoader For all Negative Sample:
+eg:
+	num_samples = num_users * num_items
+	u = num_sample // num_users
+	v = num_sample %  num_items
+
+This Need More Than 10h to Fill The User-Item Matrix
+
+2. Avoid Overfit, Replace The early stop
+
+Now We Random split Part of the Training Data for Evaluation to Avoid Overfit. However, 
+The Part of Evaluation Data Can never Used In Train
+
