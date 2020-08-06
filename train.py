@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: hliu.Luke
 # @Date:   2020-07-31 10:00:34
-# @Last Modified by:   hliu.Luke
-# @Last Modified time: 2020-08-06 14:44:43
+# @Last Modified by:   LH
+# @Last Modified time: 2020-08-07 00:11:12
 
 import os
 import time
@@ -187,13 +187,14 @@ for epoch in range(args.epochs):
 
 from predict import fastPredictionGpu
 
-results_score, results_index 
-        = fastPredictionGpu(model.embed_user.weight.detach(),
-                            model.embed_item.weight.detach(),
-                            model.bias_user.weight.detach(),
-                            model.bias_item.weight.detach(),
-                            np.mean(list(train_data.tocoo().data)),
-                            filter_list = None,
-                            batch = 512,
-                            topk = 10)
-print(results.shape)
+results_score, results_index = fastPredictionGpu(
+                                                model.embed_user.weight.detach(),
+                                                model.embed_item.weight.detach(),
+                                                model.bias_user.weight.detach(),
+                                                model.bias_item.weight.detach(),
+                                                np.mean(list(train_data.tocoo().data)),
+                                                filter_list = None,
+                                                batch = 512,
+                                                topk = 10)
+
+print(results_score.shape, results_index.shape)
